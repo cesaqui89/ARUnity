@@ -9,9 +9,10 @@
     </head>
 
     <body style="margin: 0; overflow: hidden;">
-        <a-scene
+       <!--  <a-scene reflection="directionalLight:a-light#dirlight;" -->
+        <a-scene 
             vr-mode-ui="enabled: false;"
-            loading-screen="enabled: false;"
+            loading-screen="enabled: true;"
             renderer="logarithmicDepthBuffer: true;"
             arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
             id="scene"
@@ -22,7 +23,7 @@
             <a-assets>
                 <a-asset-item
                     id="animated-asset"
-                    src="assets/asset.gltf"
+                    src="assets/caja1.gltf"
                 ></a-asset-item>
               <!--   <a-asset-item>
                     <img id="ground" src="assets/ground.jpg">
@@ -30,9 +31,29 @@
             </a-assets>
             <a-assets>
                 <img id="ground" src="assets/marker.png">
-              </a-assets>
+            </a-assets>
+
+            <script>
+                AFRAME.registerComponent('clickhandler', {
+                        schema: {
+                          txt: {default:'default'}
+                        },        
+                        init: function () {
+                          var data = this.data;
+                          var el = this.el;        
+                          el.addEventListener('click', function () {            
+                           console.log(el);
+                           console.log(el.getAttribute("animation-mixer"));
+                           if(el.getAttribute("id") == "bowser-model"){
+                           var entity = document.querySelector('a-entity[id=superMarioCoinSound]');
+                           entity.components.sound.playSound();
+                        }
+                          });        
+                        }
+                      });
+                </script>
             
-            <a-marker
+<!--             <a-marker
                 id="animated-marker"
                 type="pattern"
                 preset="custom"
@@ -41,8 +62,45 @@
                 emitevents="true"
                 cursor="fuse: false; rayOrigin: mouse;"
                 id="markerA"
-            >
-<!--                     <a-entity
+            > -->
+            <a-marker
+                id="animated-marker"
+                type="pattern"
+                preset="custom"
+                url="assets/marker.patt"
+                raycaster="objects: .clickable"
+                emitevents="true"
+                cursor="fuse: false; rayOrigin: mouse;"
+                id="markerA">
+                    <a-entity 
+                    rotation="-90 0 0" 
+                    position="-0 0.5 -1.65" 
+                    geometry="primitive: plane; height: 3; width: 2"
+                    material="color:white;transparent:true;visible:false">
+                        <a-entity id="texto" 
+                        scale="2 2 2" 
+                        rotation="0 0 0" 
+                        position = "-0.109 2.340 -1.988" 
+                        text="value: Sabias que Super Mario \nes el juego mas popular del mundo?;align:center;width:1.620;wrapCount:19.100;">
+                        </a-entity>
+                        <a-entity
+                        id="bowser-model"
+                        scale="0.541574617810604 0.541574617810604 0.541574617810604"
+                        gltf-model="#animated-asset"
+                        class="clickable"
+                        animation-mixer="loop: repeat"
+                        gesture-handler
+                        clickhandler="txt:bowser-model"
+                        shadow="receive:false"
+                        rotation="0 0 0"
+                        position = "0 0 0"
+                        >
+                        <a-entity id="superMarioCoinSound" geometry="primitive: plane" material="color: blue; visible:false" 
+                        position="0 0 0" scale="2 2 2" sound="src: url(assets/super-mario-bros-coin.mp3); autoplay: false"></a-entity>
+                        </a-entity>
+                    </a-entity>
+   
+                   <!--  <a-entity
                     id="bowser-model"
                     scale="0.541574617810604 0.541574617810604 0.541574617810604"
                     animation-mixer="loop: repeat" 
@@ -51,40 +109,33 @@
                     gesture-handler
                 >
                 </a-entity> -->
-                <a-entity id="texto" 
+<!--                 <a-entity id="texto" 
                     scale="2 2 2" 
                     rotation="-90 0 0" 
                     position = "0 2 -0.5" 
-                    text="value: Sabias que Super Mario \nes el juego más popular del mundo?;align:center;color:blue;"
-                     material="color: white;">
-                </a-entity>
-                
+                    text="value: Sabias que Super Mario \nes el juego más popular del mundo?;align:center;"
+                    material="color: blue"
+                    geometry="primitive: plane; width: auto; height: auto">
+                </a-entity> -->
+                <!-- <a-entity rotation="-90 0 0" 
+  geometry="primitive: plane; height: auto; width: auto"
+  material="color: blue"
+  text="width: 4; value: This text will be 4 units wide.; color: red;"></a-entity> -->
                   <!-- Textured plane parallel to ground. -->
-                  <a-plane visible="true"
+                 <!--  <a-plane visible="true"
                     src="#ground" 
                     position="0 -3 1" 
                     scale="1 1 1" 
                     height="2" 
                     width="2" 
                     rotation="-90 0 0">
-                    <a-entity id="river" geometry="primitive: plane" material="color: blue"
-                    position="0 0 -3" sound="src: url(assets/super-mario-bros-coin.mp3); autoplay: true"></a-entity>
-                 </a-plane>
-                 
-                <a-entity
-                    id="bowser-model"
-                    scale="0.541574617810604 0.541574617810604 0.541574617810604"
-                    gltf-model="#animated-asset"
-                    animation-mixer="loop: repeat" 
-                    class="clickable"
-                    gesture-handler
-                >
-                </a-entity>
+                    
+                 </a-plane> -->                 
+    
+            </a-entity>                
             </a-marker>
-
-            
-
-            <a-entity camera></a-entity>
+            <a-entity camera>            
+            </a-entity>
         </a-scene>
     </body>
 </html>
